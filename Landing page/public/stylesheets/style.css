@@ -1,0 +1,519 @@
+* {
+    font-family: "IRANSansWeb(FaNum) Medium", 'Arial', 'serif';
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-drag: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Game */
+.game {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../assets/images/desk.svg');
+    background-size: cover;
+    transition-duration: 0.5s;
+}
+.game.done {
+    transform: scale(1.3) translateY(-9%);
+}
+
+/* Box */
+.game .box {
+    position: absolute;
+    transition-duration: 0.9s;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%)
+}
+.game .box.back {
+    top: -100px;
+}
+.game .box > img.body {
+    width: 280px;
+    border-radius: 10px 10px 0 0;
+    display: block;
+}
+.game .box > img.door {
+    position: absolute;
+    display: block;
+    top: 100%;
+    width: 100%;
+    left: 50%;
+    transition-duration: 0.5s;
+    transform: translateX(-50%)
+}
+.game .box > img.door.open {
+    margin-left: 1px;
+    width: 151%;
+}
+.game .box > img.door.open {
+    opacity: 0;
+}
+.game .box.open > img.door.open {
+    opacity: 1;
+}
+.game .box.open > img.door.closed {
+    opacity: 0;
+}
+
+/* Area */
+.game .area {
+    position: absolute;
+    top: 110px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Vase */
+.game .area .vase {
+    width: 190px;
+    height: 190px;
+    background-size: contain;
+    position: absolute;
+    transition-duration: 2s;
+    top: -30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.game .area .vase.draggable-over {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1.2);
+}
+.game .area .vase.out {
+    top: 32%;
+}
+.game .area .vase img {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transition-duration: 0.2s;
+}
+.game .area .vase .plant {
+    width: 170%;
+    height: 170%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    opacity: 1;
+    transition-duration: 1s;
+    transform: translate(-50%, -50%) scale(0);
+}
+.game .area .vase[data-state='empty'] .empty {
+    opacity: 1;
+}
+.game .area .vase[data-state='soiled'] .soiled {
+    opacity: 1;
+}
+.game .area .vase[data-state='seeded'] .seeded {
+    opacity: 1;
+}
+.game .area .vase[data-state='filled'] .filled {
+    opacity: 1;
+}
+.game .area .vase[data-state='wet'] .wet,
+.game .area .vase[data-state='green-little'] .wet,
+.game .area .vase[data-state='green-medium'] .wet,
+.game .area .vase[data-state='green-full'] .wet {
+    opacity: 1;
+}
+.game .area .vase[data-state='green-little'] .plant {
+    transform: translate(-50%, -50%) scale(0.2)
+}
+.game .area .vase[data-state='green-medium'] .plant {
+    transform: translate(-50%, -50%) scale(0.5)
+}
+.game .area .vase[data-state='green-full'] .plant {
+    transform: translate(-50%, -50%) scale(0.9)
+}
+
+
+/* Paper */
+.game .area .paper {
+    background-color: white;
+    background-image: linear-gradient(#FFF, #d0d0d0, #F5F5F5);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) rotate(-10deg) scale(0.7);
+    direction: rtl;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5), 10px 30px 16px -11px rgba(0,0,0,0.23);
+    padding: 20px 10px;
+    transition-duration: 1s;
+}
+.game .area .paper.out {
+    transform: translateX(-50%) rotate(10deg) scale(0.7);
+    bottom: -10px;
+}
+.game .area .paper.out-page {
+    transform: translateX(-50%) scale(0.7);
+    bottom: -500px;
+}
+.game .area .paper.bold {
+    transform: translateX(-50%) rotate(0deg) scale(0.95);
+}
+.game .area .paper h2 {
+    text-align: center;
+    padding: 10px;
+    margin: 0 12px;
+    border-bottom: 1px solid #aaa;
+}
+.game .area .paper ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px;
+    padding-right: 35px;
+    padding-left: 10px;
+}
+.game .area .paper ul li {
+    position: relative;
+    font-size: 14px;
+    padding: 5px;
+    padding-bottom: 10px;
+    white-space: nowrap;
+    transition-duration: 0.5s;
+    opacity: 0.3;
+}
+.game .area .paper ul li:before {
+    content: ' ';
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    border: 3px solid rgb(133, 133, 133);
+    transition-duration: 0.5s;
+    border-radius: 4px;
+    right: -22px;
+    top: 5px;
+}
+.game .area .paper ul li.active {
+    opacity: 1;
+}
+.game .area .paper ul li.tick {
+    text-decoration: line-through;
+}
+.game .area .paper ul li.tick:before {
+    border-color: #8dd819;
+    background: #8dd819;
+}
+
+/* Soil */
+.game .area .soil {
+    position: absolute;
+    top: -350px;
+    left: 50%;
+    transition-duration: 1s;
+    transform: translateX(20px) rotate(10deg);
+}
+.game .area .soil.out {
+    top: 160px;
+    left: 50%;
+    transform: translateX(-340px) rotate(-10deg);
+}
+.game .area .soil.out-page {
+    transition-duration: 1s;
+    top: 500px;
+    left: 0;
+    z-index: 999;
+    transform: translateX(-340px) rotate(-10deg);
+}
+.game .area .soil img {
+    width: 180px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition-duration: 0.3s;
+}
+.game .area .soil img.dragged {
+    width: 185px;
+    opacity: 0;
+}
+.game .area .soil.over-droppable img.normal {
+    opacity: 0;
+}
+.game .area .soil.over-droppable img.dragged {
+    opacity: 1;
+}
+
+
+/* Seed */
+.game .area .seed {
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transition-duration: 1s;
+    transform: translateX(-100px) rotate(-10deg);
+}
+.game .area .seed.out {
+    top: 390px;
+    left: 50%;
+    transform: translateX(-240px) rotate(10deg);
+}
+.game .area .seed.out-page {
+    transition-duration: 1s;
+    top: 900px;
+    left: -10%;
+    z-index: 999;
+    transform: translateX(-240px) rotate(-10deg);
+}
+.game .area .seed img {
+    width: 80px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition-duration: 0.3s;
+}
+.game .area .seed img.dragged {
+    width: 90px;
+    opacity: 0;
+}
+.game .area .seed.over-droppable img.normal {
+    opacity: 0;
+}
+.game .area .seed.over-droppable img.dragged {
+    opacity: 1;
+}
+
+/* Water Glasses */
+.glasses {
+    position: absolute;
+    left: 100%;
+    top: 500px;
+    transition-duration: 2s;
+    transform: translateX(130px);
+}
+.glasses.out {
+    left: 50%;
+    top: 200px;
+    transform: translateX(130px);
+}
+.glasses.out-page {
+    transition-duration: 1s;
+    left: 100%;
+    top: 600px;
+    transform: translateX(130px);
+}
+.glasses img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 220px;
+    transition-duration: 0.3s;
+    opacity: 0;
+}
+.glasses img.normal {
+    opacity: 1;
+}
+.glasses.over-droppable img.tilted {
+    opacity: 1;
+}
+.glasses.over-droppable img.normal {
+    opacity: 0;
+}
+
+/* iPhone */
+.iphone {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateX(-470px) translateY(80px) rotate(-15deg);
+    z-index: 99;
+}
+.iphone img {
+    width: 180px;
+}
+.iphone .lcd {
+    width: 165px;
+    height: 289px;
+    position: absolute;
+    top: 37px;
+    left: 8px;
+    z-index: -1;
+    overflow: hidden;
+}
+.iphone .lcd .black-screen, .iphone .lcd .ui {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 2;
+    transition-duration: 0.3s;
+}
+.iphone.unlock .lcd .black-screen {
+    opacity: 0;
+}
+.iphone .lcd .ui {
+    background: white;
+    background: url(../assets/images/iphone-bg.jpg);
+    background-size: 100%;
+    background-position: center;
+    transition-duration: 0.3s;
+    transform: scale(1.1);
+    z-index: 1;
+}
+.iphone.unlock .lcd .ui {
+    transition-duration: 0.9s;
+    transform: scale(1);
+}
+.iphone .lcd .ui .clock {
+    width: 100px;
+    height: 100px;
+    border: 2px solid #000;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    box-shadow: 0 0 0 10px #FFF;
+}
+.iphone .lcd .ui .clock > div {
+    border-radius: 2px;
+    width: 4px;
+    height: 20px;
+    background: #000;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    animation: clock 600s infinite linear;
+    animation-play-state: running;
+}
+.iphone .lcd .ui .clock.pause > div {
+    animation-play-state: paused;
+}
+.iphone .lcd .ui .clock .minutes {
+    width: 2px;
+    height: 30px;
+    animation-duration: 10s;
+}
+.iphone .lcd .ui .clock .seconds {
+    width: 1px;
+    height: 40px;
+    animation-duration: 0.3s;
+}
+@keyframes clock {
+    from {  transform: translate(-50%, -50%) rotate(0deg) translateY(-50%);  }
+    to {  transform: translate(-50%, -50%) rotate(360deg) translateY(-50%);  }
+}
+
+/* -- Intro -- */
+.intro {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateY(120px);
+    text-align: center;
+    transition-duration: 0.5s;
+}
+.intro.hide {
+    opacity: 0;
+    pointer-events: none;
+}
+.intro h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 40px;
+    color: #453525;
+}
+.intro button, .outro button {
+    margin: 20px;
+    border: 2px solid #722706;
+    border-radius: 10px;
+    width: 210px;
+    padding: 10px;
+    padding-bottom: 12px;
+    color: #722706;
+    font-size: 20px;
+    background: rgba(114, 39, 6, 0);
+    transition-duration: 0.1s;
+    cursor: pointer;
+    outline: none;
+}
+.intro button:hover, .outro button:hover {
+    transition-duration: 0.3s;
+    transform: scale(1.05);
+    background: rgba(114, 39, 6, 0.1);
+}
+.intro button:active, .outro button:active {
+    transition-duration: 0.1s;
+    transform: scale(0.9);
+    background: rgba(114, 39, 6, 0.2);
+}
+
+/* -- Outro -- */
+.outro {
+    position: absolute;
+    z-index: 999;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40%;
+    text-align: center;
+    direction: rtl;
+    opacity: 0;
+    transition-duration: 0.5s;
+    pointer-events: none;
+}
+.outro.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+.outro h2 {
+    font-size: 22px;
+    width: 50%;
+    margin: auto;
+}
+.outro button {
+    width: 300px;
+    background: rgba(114, 39, 6, 1);
+    color: white;
+}
+.outro button:hover {
+    background: rgba(114, 39, 6, 0.8);
+}
+.outro button:active {
+    background: rgba(114, 39, 6, 0.5);
+}
+
+/* -- MOBILE -- */
+@media (max-width: 500px) {
+    .intro h2 {
+        margin-top: 20px;
+        font-size: 30px;
+    }
+    .game .area .soil.out {
+        transform: translateX(-320px) rotate(-7deg);
+    }
+    .game .area .seed.out {
+        top: 370px;
+        transform: translateX(-200px) rotate(10deg);
+    }
+    .game .area .glasses.out {
+        top: 160px;
+        transform: translateX(150px) rotate(20deg);
+    }
+    .outro h2 {
+        margin-top: 10px;
+        font-size: 19px;
+        width: 77%;
+    }
+}
